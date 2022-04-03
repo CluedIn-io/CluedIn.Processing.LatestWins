@@ -1,0 +1,10 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <ItemGroup>
+    <ProjectReference Include="..\LatestWins.Infrastructure\Crawling.LatestWins.Infrastructure.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="LatestWinsCrawlerComponent.config">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+</Project>

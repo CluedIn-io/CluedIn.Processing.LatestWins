@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <ItemGroup>
+    <ProjectReference Include="..\LatestWins.Infrastructure\Crawling.LatestWins.Infrastructure.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\cluedin.png" />
+    <EmbeddedResource Include="LatestWinsProviderComponent.config">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="CluedIn.Core" />
+    <PackageReference Include="CluedIn.Core.Agent" />
+    <PackageReference Include="CluedIn.Server.Common.WebApi" />
+    <PackageReference Include="CluedIn.Agent" />
+  </ItemGroup>
+</Project>

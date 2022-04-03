@@ -1,0 +1,7 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\src\LatestWins.Core\Crawling.LatestWins.Core.csproj" />
+    <ProjectReference Include="..\..\..\src\LatestWins.Crawling\Crawling.LatestWins.csproj" />
+    <ProjectReference Include="..\..\..\src\LatestWins.Infrastructure\Crawling.LatestWins.Infrastructure.csproj" />
+  </ItemGroup>
+</Project>

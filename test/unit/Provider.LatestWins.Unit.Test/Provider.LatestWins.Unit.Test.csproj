@@ -1,0 +1,5 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\src\LatestWins.Provider\Provider.LatestWins.csproj" />
+  </ItemGroup>
+</Project>

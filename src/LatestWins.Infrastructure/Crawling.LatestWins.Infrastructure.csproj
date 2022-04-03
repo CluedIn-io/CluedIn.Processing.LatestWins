@@ -1,0 +1,5 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <ItemGroup>
+    <ProjectReference Include="..\LatestWins.Core\Crawling.LatestWins.Core.csproj" />
+  </ItemGroup>
+</Project>
