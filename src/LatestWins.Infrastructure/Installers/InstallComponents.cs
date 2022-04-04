@@ -13,13 +13,13 @@ namespace CluedIn.Crawling.LatestWins.Infrastructure.Installers
     {
         public void Install(IWindsorContainer container, IConfigurationStore store)
         {
-            container
-                .AddFacilityIfNotExists<TypedFactoryFacility>()
-                .Register(Component.For<ILatestWinsClientFactory>().AsFactory())
-                .Register(Component.For<LatestWinsClient>().LifestyleTransient());
+            //container
+            //    .AddFacilityIfNotExists<TypedFactoryFacility>()
+            //    .Register(Component.For<ILatestWinsClientFactory>().AsFactory())
+            //    .Register(Component.For<LatestWinsClient>().LifestyleTransient());
 
-            if (!container.Kernel.HasComponent(typeof(IRestClient)) && !container.Kernel.HasComponent(typeof(RestClient)))
-                container.Register(Component.For<IRestClient, RestClient>());
+            //if (!container.Kernel.HasComponent(typeof(IRestClient)) && !container.Kernel.HasComponent(typeof(RestClient)))
+            //    container.Register(Component.For<IRestClient, RestClient>());
         }
     }
 }

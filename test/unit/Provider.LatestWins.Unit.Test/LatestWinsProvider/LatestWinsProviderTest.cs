@@ -18,7 +18,7 @@ namespace CluedIn.Provider.LatestWins.Unit.Test.LatestWinsProvider
             Container = new Mock<IWindsorContainer>();
             NameClientFactory = new Mock<ILatestWinsClientFactory>();
             var applicationContext = new ApplicationContext(Container.Object);
-            Sut = new LatestWins.LatestWinsProvider(applicationContext, NameClientFactory.Object);
+            //Sut = new LatestWins.LatestWinsProvider(applicationContext, NameClientFactory.Object);
         }
     }
 }
