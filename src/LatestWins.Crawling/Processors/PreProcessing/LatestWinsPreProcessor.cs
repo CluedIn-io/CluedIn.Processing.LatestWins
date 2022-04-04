@@ -24,20 +24,18 @@ namespace CluedIn.Crawling.LatestWins.Processors.PreProcessing
             if (dataToMerge == null)
                 return SaveResult.Ignored;
 
-            //metadataToMerge.Properties["mergeTimeStamp"] = DateTimeOffset.UtcNow.ToString();
-
             if (targetEntity.EntityType != "/Person")
                 return SaveResult.Ignored;
 
             // for this prototype - let's only operate on the "chris" named entity
             if (targetEntity.Name == "chris")
             {
-                // okay... we already have 2 data parts and we are thinking of adding a third...
-                // let's delete as many old data parts as possible
-
-                // TODO: we need to handle the case were we have only one existing data part... perhaps guard the second part as indicated?
-
+                // how to get data parts
+                // I'm happy with the DataEntries member for now
                 //var parts = targetEntity.Details.Parts.OfType<DataPart>();
+
+                // thin down from 2 to 1
+                // (i.e. we already have 2 parts and we are thinking about adding a third)
                 if (targetEntity.Details.DataEntries.Count == 2)
                 {
                     var it = targetEntity.Details.DataEntries.GetEnumerator();
@@ -54,12 +52,15 @@ namespace CluedIn.Crawling.LatestWins.Processors.PreProcessing
                     {
                         targetEntity.Details.DataEntries.Remove(first);
                     }
+                }
 
-                    // TODO: put me in a Count == 1 clause?
-
-                    it = targetEntity.Details.DataEntries.GetEnumerator();
+                // thin down from the one we want to merge with the existing 1
+                // covers the case where we had 2 and also the case where we only have 1
+                if (targetEntity.Details.DataEntries.Count == 1)
+                {
+                    var it = targetEntity.Details.DataEntries.GetEnumerator();
                     it.MoveNext();
-                    first = it.Current;
+                    var first = it.Current;
 
                     if (dataToMerge.ProcessedEntityData.ModifiedDate > first.ProcessedEntityData.ModifiedDate)
                     {
@@ -68,13 +69,6 @@ namespace CluedIn.Crawling.LatestWins.Processors.PreProcessing
                     else
                     {
                         return SaveResult.Ignored;
-                    }
-
-                    {
-                        // this happens later in the common code
-                        //MappingProcessing.CreateMappings(targetEntity);
-                        //VersionHistoryProcessing.CreateChangeHistory(targetEntity);
-                        //VersionHistoryProcessing.CreateChangeHistoryEdges(targetEntity, context);
                     }
                 }
             }
