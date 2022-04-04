@@ -7,4 +7,7 @@
       <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Processors\NewFolder\" />
+  </ItemGroup>
 </Project>
