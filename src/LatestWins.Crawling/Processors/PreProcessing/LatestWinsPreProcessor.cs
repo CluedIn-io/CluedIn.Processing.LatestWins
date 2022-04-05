@@ -46,10 +46,12 @@ namespace CluedIn.Crawling.LatestWins.Processors.PreProcessing
 
                     if (first.ProcessedEntityData.ModifiedDate > second.ProcessedEntityData.ModifiedDate)
                     {
+                        metadataToMerge.Properties["LatestWins_LastAction_ExplainLog"] = "2 Parts. Removed Older Second Part " + second.PartId + ". ";
                         targetEntity.Details.DataEntries.Remove(second);
                     }
                     else
                     {
+                        metadataToMerge.Properties["LatestWins_LastAction_ExplainLog"] = "2 Parts. Removed Older First Part " + first.PartId + ". ";
                         targetEntity.Details.DataEntries.Remove(first);
                     }
                 }
@@ -64,10 +66,13 @@ namespace CluedIn.Crawling.LatestWins.Processors.PreProcessing
 
                     if (dataToMerge.ProcessedEntityData.ModifiedDate > first.ProcessedEntityData.ModifiedDate)
                     {
+                        metadataToMerge.Properties["LatestWins_LastAction_ExplainLog"] = "1 Part. Removed Older Existing Part " + first.PartId + ". ";
                         targetEntity.Details.DataEntries.Remove(first);
                     }
                     else
                     {
+                        // probably not logged since we have ignored...
+                        metadataToMerge.Properties["LatestWins_LastAction_ExplainLog"] = "1 Part. Kept it since new part was older. ";
                         return SaveResult.Ignored;
                     }
                 }
