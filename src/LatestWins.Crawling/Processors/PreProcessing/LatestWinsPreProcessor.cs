@@ -36,6 +36,10 @@ namespace CluedIn.Crawling.LatestWins.Processors.PreProcessing
 
                 // thin down from 2 to 1
                 // (i.e. we already have 2 parts and we are thinking about adding a third)
+                // this case is unlikely since we already thin down at 1 data part
+                // however, if this plugin is loaded later then we would have more parts
+                // TODO: to make this production, you would need to handle Count > 1 generically
+                // which is probably just a for loop till only one data part is left
                 if (targetEntity.Details.DataEntries.Count == 2)
                 {
                     var it = targetEntity.Details.DataEntries.GetEnumerator();
