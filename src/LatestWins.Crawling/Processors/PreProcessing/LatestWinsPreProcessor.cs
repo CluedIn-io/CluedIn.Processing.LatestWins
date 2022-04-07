@@ -24,61 +24,63 @@ namespace CluedIn.Crawling.LatestWins.Processors.PreProcessing
             if (dataToMerge == null)
                 return SaveResult.Ignored;
 
-            if (targetEntity.EntityType != "/Person")
-                return SaveResult.Ignored;
-
-            // for this prototype - let's only operate on the "chris" named entity
-            if (targetEntity.Name == "chris")
+            // to protect us from ourselves we ignore these types
+            if ((targetEntity.EntityType == "/Organization") ||
+                (targetEntity.EntityType == "/Infrastructure/User") ||
+                (targetEntity.EntityType == "/Person")
+                )
             {
-                // how to get data parts
-                // I'm happy with the DataEntries member for now
-                //var parts = targetEntity.Details.Parts.OfType<DataPart>();
+                return SaveResult.Ignored;
+            }
 
-                // thin down from 2 to 1
-                // (i.e. we already have 2 parts and we are thinking about adding a third)
-                // this case is unlikely since we already thin down at 1 data part
-                // however, if this plugin is loaded later then we would have more parts
-                // TODO: to make this production, you would need to handle Count > 1 generically
-                // which is probably just a for loop till only one data part is left
-                if (targetEntity.Details.DataEntries.Count == 2)
+            // how to get data parts
+            // I'm happy with the DataEntries member for now
+            //var parts = targetEntity.Details.Parts.OfType<DataPart>();
+
+            // thin down from 2 to 1
+            // (i.e. we already have 2 parts and we are thinking about adding a third)
+            // this case is unlikely since we already thin down at 1 data part
+            // however, if this plugin is loaded later then we would have more parts
+            // TODO: to make this production, you would need to handle Count > 1 generically
+            // which is probably just a for loop till only one data part is left
+            if (targetEntity.Details.DataEntries.Count == 2)
+            {
+                var it = targetEntity.Details.DataEntries.GetEnumerator();
+                it.MoveNext();
+                var first = it.Current;
+                it.MoveNext();
+                var second = it.Current;
+
+                if (first.ProcessedEntityData.ModifiedDate > second.ProcessedEntityData.ModifiedDate)
                 {
-                    var it = targetEntity.Details.DataEntries.GetEnumerator();
-                    it.MoveNext();
-                    var first = it.Current;
-                    it.MoveNext();
-                    var second = it.Current;
-
-                    if (first.ProcessedEntityData.ModifiedDate > second.ProcessedEntityData.ModifiedDate)
-                    {
-                        metadataToMerge.Properties["LatestWins_LastAction_ExplainLog"] = "2 Parts. Removed Older Second Part " + second.PartId + ". ";
-                        targetEntity.Details.DataEntries.Remove(second);
-                    }
-                    else
-                    {
-                        metadataToMerge.Properties["LatestWins_LastAction_ExplainLog"] = "2 Parts. Removed Older First Part " + first.PartId + ". ";
-                        targetEntity.Details.DataEntries.Remove(first);
-                    }
+                    metadataToMerge.Properties["LatestWins_LastAction_ExplainLog"] = "2 Parts. Removed Older Second Part " + second.PartId + ". ";
+                    targetEntity.Details.DataEntries.Remove(second);
                 }
-
-                // thin down from the one we want to merge with the existing 1
-                // covers the case where we had 2 and also the case where we only have 1
-                if (targetEntity.Details.DataEntries.Count == 1)
+                else
                 {
-                    var it = targetEntity.Details.DataEntries.GetEnumerator();
-                    it.MoveNext();
-                    var first = it.Current;
+                    metadataToMerge.Properties["LatestWins_LastAction_ExplainLog"] = "2 Parts. Removed Older First Part " + first.PartId + ". ";
+                    targetEntity.Details.DataEntries.Remove(first);
+                }
+            }
 
-                    if (dataToMerge.ProcessedEntityData.ModifiedDate > first.ProcessedEntityData.ModifiedDate)
-                    {
-                        metadataToMerge.Properties["LatestWins_LastAction_ExplainLog"] = "1 Part. Removed Older Existing Part " + first.PartId + ". ";
-                        targetEntity.Details.DataEntries.Remove(first);
-                    }
-                    else
-                    {
-                        // probably not logged since we have ignored...
-                        metadataToMerge.Properties["LatestWins_LastAction_ExplainLog"] = "1 Part. Kept it since new part was older. ";
-                        return SaveResult.Ignored;
-                    }
+            // thin down from the one we want to merge with the existing 1
+            // covers the case where we had 2 and also the case where we only have 1
+            if (targetEntity.Details.DataEntries.Count == 1)
+            {
+                var it = targetEntity.Details.DataEntries.GetEnumerator();
+                it.MoveNext();
+                var first = it.Current;
+
+                if (dataToMerge.ProcessedEntityData.ModifiedDate > first.ProcessedEntityData.ModifiedDate)
+                {
+                    metadataToMerge.Properties["LatestWins_LastAction_ExplainLog"] = "1 Part. Removed Older Existing Part " + first.PartId + ". ";
+                    targetEntity.Details.DataEntries.Remove(first);
+                }
+                else
+                {
+                    // probably not logged since we have ignored...
+                    metadataToMerge.Properties["LatestWins_LastAction_ExplainLog"] = "1 Part. Kept it since new part was older. ";
+                    return SaveResult.Ignored;
                 }
             }
 
