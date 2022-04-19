@@ -1,57 +1,16 @@
-# CluedIn.Crawling.LatestWins
+# Purpose
+To demostrate how to write a pre-merge processor.
 
-CluedIn crawler for LatestWins.
+# Basic Operation
+All entities (other than `/Organization` or `/Infrastructure/User` or `/Person`) with all only the latest data part kept based on modification date. 
 
-[![Build Status](https://dev.azure.com/CluedIn-io/CluedIn%20Crawlers/_apis/build/status/CluedIn-io.CluedIn.Crawling.LatestWins?branchName=master)](https://dev.azure.com/CluedIn-io/CluedIn%20Crawlers/_build/latest?definitionId=TODO&branchName=master)
-------
+This is so if you are using tagging logic, only the latest information will be used to evaluate the tagging rules otherwise you can end up with older information causing an undesired tag. In hindsight, it would be better if the rules themselves would only operate on the latest data part / golden record.
 
-## Overview
+For troubleshooting (to emulate explain log function) stores what happened in a property called `LatestWins_LastAction_ExplainLog`.
 
-This repository contains the code and associated tests for the LatestWins crawler.
+# References
+[Main code Processors/PreProcessing/LatestWinsPreProcessor.cs](https://github.com/CluedIn-io/CluedIn.Processing.LatestWins/blob/78cbc5957d4743ebe0520c5fe49ae6b7a8e8c8fc/src/LatestWins.Crawling/Processors/PreProcessing/LatestWinsPreProcessor.cs)
 
-## Working with the Code
+[Adding a new PreProcessor](https://documentation.cluedin.net/developer/preprocessor)
 
-Load [Crawling.LatestWins.sln](.\Crawling.LatestWins.sln) in Visual Studio or your preferred development IDE.
-
-### Running Tests
-
-<!-- A mocked environment is required to run `integration` and `acceptance` tests. The mocked environment can be built and run using the following [Docker](https://www.docker.com/) command:
-
-```Shell
-docker-compose up --build -d
-``` -->
-
-To run all `unit` and `integration` tests
-
-```Shell
-dotnet test --filter Unit
-```
-
-To run only `integration` tests
-
-```Shell
-dotnet test --filter Integration
-```
-
-To run [Pester](https://github.com/pester/Pester) `acceptance` tests
-
-```PowerShell
-invoke-pester test\acceptance
-```
-
-<!-- 
-To review the [WireMock](http://wiremock.org/) HTTP proxy logs
-
-```Shell
-docker-compose logs wiremock
-``` -->
-
-## References
-
-* [LatestWins](TODO)
-
-### Tooling
-
-* [Docker](https://www.docker.com/)
-* [Pester](https://github.com/pester/Pester)
-<!-- * [WireMock](http://wiremock.org/) -->
+[Adding a new IMergePreProcessor](https://documentation.cluedin.net/developer/imergepreprocessor)
